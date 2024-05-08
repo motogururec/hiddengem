@@ -1,0 +1,12 @@
+pandas
+langchain-groq
+langchain
+openai
+streamlit
+streamlit-chat
+crewai
+crewai_tools
+langchain_openai
+duckduckgo_search
+pytrends
+langchain_community
