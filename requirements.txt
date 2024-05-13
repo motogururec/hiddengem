@@ -12,3 +12,4 @@ pytrends
 langchain_community
 praw
 pysqlite3-binary
+streamlit_shadcn_ui
