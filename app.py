@@ -26,39 +26,41 @@ def main():
         st.markdown( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
         
 
-
+    
+  
     # Set up the customization options
     st.sidebar.title('Customization')
     model = st.sidebar.selectbox(
         'Choose a model',
         ['llama3-8b-8192', 'mixtral-8x7b-32768', 'gemma-7b-it','llama3-70b-8192']
     )
-    # OPENAI_MODEL = st.sidebar.selectbox(
-    #     "Select Model",
-    #     ["gpt-4-turbo","gpt-4", "gpt-3.5-turbo"]  # Add your model options here
-    # )
-    # api_key = st.secrets["OPEN_API_KEY"]
-
-    # if api_key:
-    #     os.environ["OPENAI_API_KEY"] = api_key
-
     llm = ChatGroq(
             temperature=0, 
             groq_api_key = st.secrets["GROQ_API_KEY"], 
             model_name=model
         )
+    
+    with st.sidebar:
+        st.markdown("---")
+        st.markdown(
+            '<h5>Made with ❤ in &nbsp<img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16">&nbsp by <a href="https://twitter.com/tuantruong">@tuantruong</a></h5>',
+            unsafe_allow_html=True,
+        )
+
+
+    
 
     # Streamlit UI
-    st.title('CrewAI Idea Finder')
+    st.title(' SASS Niche Idea  - LLM CrewAI ')
     multiline_text = """
     The CrewAI Machine Learning Assistant is designed to guide you through the process of finding a niche in the tech industry.
     """
     
 
     st.markdown(multiline_text, unsafe_allow_html=True)
-    topic = st.text_input("Enter your topic here:")
+    subreddit = st.text_input("Enter the sub reddits that you want to search here:")
     #subreddit_name = st.text_input("Enter the subreddit name:")
-    google_trends = GoogleTrends()
+    # google_trends = GoogleTrends()
     reddit_trends = RedditTrends()
     
     search = DuckDuckGoSearchRun()
@@ -69,10 +71,9 @@ def main():
 )
 
   
-  
-
+    trigger_btn = ui.button(text="Get the ideas", key="trigger_btn")
   # Run the workflow
-    if st.button("Get It Now"):
+    if trigger_btn:
         niche_analyst = Agent(
             role="Niche Analyst",
             goal="Find inspiring SASS ideas from specified subreddits ",
@@ -108,7 +109,7 @@ def main():
         
         # Task for Trend Analyst to scrape trending SaaS ideas from specified subreddits
         niche_analysis_task = Task(
-            description=f""" Based on this Topic : {topic}.
+            description=f""" Based on these subreddit : {subreddit}.
             Scrape specified subreddits for trending discussions around SaaS ideas. Focus on identifying emerging trends, popular discussions, and the most engaging content related to SaaS products.
             """,
             expected_output=f"""
@@ -118,8 +119,6 @@ def main():
             agent=niche_analyst,
             async_execution=False,
         )
-
-        
 
         # Task for Competitor Analyst to conduct an in-depth analysis of existing solutions
         competitor_analysis_task = Task(

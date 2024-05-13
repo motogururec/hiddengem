@@ -4,7 +4,7 @@ import praw
 from datetime import datetime
 from helper_tools import remove_emojis
 from crewai_tools import BaseTool
-
+import streamlit as st
 
 class RedditTrends(BaseTool):
     name: str = "Reddit Trends"
@@ -50,8 +50,8 @@ class RedditTrends(BaseTool):
         print("Scraping Reddit for the latest trends...")
         # Setup Credentials
         reddit = praw.Reddit(
-            client_id="zEU_3ix9-H2mKpvTP5peTg",
-            client_secret="WlCE6A_qsZszDpLaBBoKlz6MX_6tew",
+            client_id=st.secrets["REDDIT_CLIENT_ID"],
+            client_secret=st.secrets["REDDIT_CLIENT_SECRET"],
             user_agent="aiquill by /u/tuantruong84",
         )
 
@@ -62,6 +62,7 @@ class RedditTrends(BaseTool):
         if len(subreddits) > 3:
             raise Exception("Maximum of 3 subreddits at the time.")
 
+        print(f"Scraping Reddit for the latest trends from {subreddits}...")
         max_amount_of_posts = 3
 
         scrapped_reddit_data = {}
