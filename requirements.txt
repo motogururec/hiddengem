@@ -10,4 +10,5 @@ langchain_openai
 duckduckgo_search
 pytrends
 langchain_community
+praw
 pysqlite3-binary
